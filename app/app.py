@@ -2,17 +2,14 @@ import pickle
 import numpy as np
 from src.genai_advisor import generate_health_advice
 
-# Load trained ML model
+# Load model and scaler
 with open("models/diabetes_model.pkl", "rb") as f:
-    model = pickle.load(f)
+    model, scaler = pickle.load(f)
 
-# Sample input data
 sample_input = np.array([[120, 70, 30.5, 25, 150, 0, 1, 33]])
+sample_input = scaler.transform(sample_input)
 
-# Prediction
 prediction = model.predict(sample_input)[0]
-
-# Generate AI advice
 advice = generate_health_advice(prediction)
 
 print("Prediction:", "Diabetic" if prediction == 1 else "Non-Diabetic")
